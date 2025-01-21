@@ -121,14 +121,18 @@ public class MemorySpace {
 		if (freeList.getSize() <= 1) {
 			return;
 		}
-		Node currentNode = freeList.getFirst();
 	
+		// Ensure freeList is sorted
+		freeList.sortByBaseAddress();
+	
+		// Merge adjacent blocks
+		Node currentNode = freeList.getFirst();
 		while (currentNode != null && currentNode.next != null) {
 			MemoryBlock currentBlock = currentNode.block;
 			MemoryBlock nextBlock = currentNode.next.block;
 	
 			if (currentBlock.baseAddress + currentBlock.length == nextBlock.baseAddress) {
-				currentBlock.length += nextBlock.length; 
+				currentBlock.length += nextBlock.length;
 				freeList.remove(currentNode.next);
 			} else {
 				currentNode = currentNode.next;

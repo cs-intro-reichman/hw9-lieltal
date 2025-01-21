@@ -256,4 +256,31 @@ public class LinkedList {
 		result += " ";
 		return result;
 	}
+
+	public void sortByBaseAddress() {
+		if (size <= 1) {
+			return; 
+		}
+
+		LinkedList sortedList = new LinkedList();
+
+		while (getSize() > 0) {
+			Node smallestNode = this.getFirst();
+			Node currentNode = this.getFirst();
+			while (currentNode != null) {
+				if (currentNode.block.baseAddress < smallestNode.block.baseAddress) {
+					smallestNode = currentNode;
+				}
+				currentNode = currentNode.next;
+			}
+	
+			remove(smallestNode);
+	
+			sortedList.addLast(smallestNode.block);
+		}
+	
+		first = sortedList.first;
+		last = sortedList.last;
+		size = sortedList.size;
+	}
 }
